@@ -69,24 +69,32 @@ ctab <- function(row, col, margin = 1, dec = 1, percs = FALSE, total = FALSE){
 # Crosstab with 2 dimensions an one variable for unique counting
 #
 #############################
-#' Creates a Crosstable with 2 dimensions and one variable for a unique counting
+#' Creates a Crosstable in Markdown format with 2 dimensions and one variable for a unique counting
 #'
 #'
 #'
 #' @param row vector containing factors for row
 #' @param col vector containing factors for columns
 #' @param data the dataframe to get the values from
-#' @param  margin index number (1 for rows, etc.)
-#' @param  dec decimal points (default =1)
-#' @param total sum of columns and rows (default= FALSE)
-#'
+#' @param margin index number (1 for rows, etc.)
+#' @param dec decimal points (default =1)
+#' @param total sum of columns and rows (default= TRUE)
+#' @param percs if TRUE percentage of row or column are displayed (default=TRUE)
+#' @param split.tables where to split wide tables to separate tables. The default value is 300 characters
+#' @param margin index, or vector of indices to generate margin for
+#' @param table.continues: string (default: 'Tabelle wird fortgesetzt') passed to pandoc.table to be used as caption for long (split) without a use defined caption
+#' @param sortcounts if TRUE rows will be sorted descendent by counts
+#' @param split.cells where to split cells' text with line breaks. Default to 30, to disable set to Inf. Can be also supplied as a vector, for each cell separately (if length(split.cells) == number of columns + 1, then first value in split.cells if for row names, and others are for columns). Supports relative (percentage) parameters in combination with split.tables.
+#' @param ucol.name title of counted values default is "Patienten [n/(%)]"
 #'
 #' @author Stefan Bartels, \email{email@biobits.eu}
 #'
 #' @examples
 #' PatientCohort<-c("CohortA","CohortA","CohortA","CohortB","CohortB","CohortB","CohortB","CohortB","CohortB","CohortC","CohortC","CohortC","CohortC")
 #' PatientClass<-c("ClassA","ClassB","ClassB","ClassC","ClassA","ClassC", "ClassA","ClassB","ClassA","ClassC","ClassA","ClassA","ClassA")
-#' t<-ctab(row=PatientCohort,col=PatientClass,margin=1,total=T,perc=T)
+#' df<-as.data.frame(cbind(PatientCohort,PatientClass))
+#' tab<-bbcounttab(row="PatientCohort",col="PatientClass",data=df,total=T,perc=T,dec=2,ucol.name="Classes")
+#' tab
 #'
 #'@export
 bbcounttab<-function(row=NULL,col=NULL,data,uniquecounts=NULL,caption=NULL,percs=TRUE,total=TRUE,dec=1,split.tables=300,margin=3,
@@ -136,10 +144,38 @@ bbcounttab<-function(row=NULL,col=NULL,data,uniquecounts=NULL,caption=NULL,percs
 
 #############################
 #
-# Crosstab with 1 dimensions an summary of one variable (Mean,Sd,median 1,2nd quantile, Counts)
+# Crosstab with 1 dimensions and summary of one variable (Mean,Sd,median 1,2nd quantile, Counts)
 #
 #############################
-r_summarizetab<-function(data,var,group=NULL,caption=NULL,total=TRUE,dec=1,split.tables=300,margin=3,
+
+#' Creates a markdown Crosstable with 1 dimensions and summary of one variable (Mean,Sd,median 1,2nd quantile, Counts)
+#'
+#'
+#'
+#' @param data the dataframe to use
+#' @param var the variable to count
+#' @param group to group "var" by
+#' @param caption of the table
+#' @param total sum of columns and rows (default= TRUE)
+#' @param dec decimal points (default =1)
+#' @param split.tables where to split wide tables to separate tables. The default value is 300 characters
+#' @param margin index number (1 for rows, etc.)
+#' @param table.continues: string (default: 'Tabelle wird fortgesetzt') passed to pandoc.table to be used as caption for long (split) without a use defined caption
+#' @param groupname column header for groups
+#' @param orderby the column to order by
+
+#'
+#' @author Stefan Bartels, \email{email@biobits.eu}
+#'
+#' @examples
+#' PatientWeight<-c(66.5,82.2,74.8,70.2,95.7,55.8,59.2,77.2,75.0,75.0,102.8,62.8,65.3)
+#' PatientClass<-c("ClassA","ClassB","ClassB","ClassC","ClassA","ClassC", "ClassA","ClassB","ClassA","ClassC","ClassA","ClassA","ClassA")
+#' df<-as.data.frame(cbind(PatientWeight,PatientClass))
+#' tab<-bbsummarizetab(data=df,var="PatientWeight",group="PatientClass",caption="Summary of patients weight",total=T,dec=2,groupname="Classes")
+#' tab
+#'
+#'@export
+bbsummarizetab<-function(data,var,group=NULL,caption=NULL,total=TRUE,dec=1,split.tables=300,margin=3,
                          table.continues="Tabelle wird fortgesetzt",groupname=NULL,orderby=NULL ){
   require(dplyr)# hier mus as.numerich verwenbdet werden wg bug: https://github.com/hadley/dplyr/issues/893
 
@@ -209,7 +245,34 @@ r_summarizetab<-function(data,var,group=NULL,caption=NULL,total=TRUE,dec=1,split
 #########################################################
 # BArplot with ggplot
 #########################################################
-r_ggbarplot<-function(data, factor,uniquecounts,countslab="Anzahl", xlab=NULL,xrotate=FALSE,facet=NULL,prop=FALSE,xaxisorder=NULL,
+#' Creates a markdown Crosstable with 1 dimensions and summary of one variable (Mean,Sd,median 1,2nd quantile, Counts)
+#'
+#'
+#'
+#' @param data the dataframe to use
+#' @param var the variable to count
+#' @param group to group "var" by
+#' @param caption of the table
+#' @param total sum of columns and rows (default= TRUE)
+#' @param dec decimal points (default =1)
+#' @param split.tables where to split wide tables to separate tables. The default value is 300 characters
+#' @param margin index number (1 for rows, etc.)
+#' @param table.continues: string (default: 'Tabelle wird fortgesetzt') passed to pandoc.table to be used as caption for long (split) without a use defined caption
+#' @param groupname column header for groups
+#' @param orderby the column to order by
+
+#'
+#' @author Stefan Bartels, \email{email@biobits.eu}
+#'
+#' @examples
+#' PatientWeight<-c(66.5,82.2,74.8,70.2,95.7,55.8,59.2,77.2,75.0,75.0,102.8,62.8,65.3)
+#' PatientClass<-c("ClassA","ClassB","ClassB","ClassC","ClassA","ClassC", "ClassA","ClassB","ClassA","ClassC","ClassA","ClassA","ClassA")
+#' df<-as.data.frame(cbind(PatientWeight,PatientClass))
+#' tab<-bbsummarizetab(data=df,var="PatientWeight",group="PatientClass",caption="Summary of patients weight",total=T,dec=2,groupname="Classes")
+#' tab
+#'
+#'@export
+bbbarplot<-function(data, factor,uniquecounts,countslab="Anzahl", xlab=NULL,xrotate=FALSE,facet=NULL,prop=FALSE,xaxisorder=NULL,
                       horizontal=FALSE,stackpar=NULL,facetncol=2,stacktitle="Gruppe",facetscales = "free",cex.datalabel=2,
                       datalabel=TRUE
 ){
