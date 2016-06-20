@@ -534,7 +534,33 @@ bbgghistplot<-function(data, factor,uniquecounts,countslab="Anzahl", xlabel=NULL
 #########################################################
 # boxplot with ggplot
 #########################################################
-bbggboxplot<-function(data, factor,group ,uniquecounts,ylabel="Anzahl", xlabel=NULL,bin=1,xrotate=FALSE,facet=NULL){
+#' boxplot with ggplot
+#'
+#'
+#'
+#' @param data
+#' @param factor
+#' @param uniquecounts
+#' @param countslab ="Anzahl"
+#' @param xlabel =NULL
+#' @param bin default=1
+#' @param facet default=NULL
+#' @param dens if ture a density plot wil be performed default=FALSE
+
+#' @author Stefan Bartels, \email{email@biobits.eu}
+#'
+#' @examples
+#' PatID<-seq(1,50)
+#' PatientWeight<-runif(50, min=40, max=100)
+#' PatientClass<-rep(c("ClassA","ClassB","ClassC","ClassB","ClassC"),10)
+#' df<-as.data.frame(cbind(PatID,PatientWeight,PatientClass))
+#' df$PatientWeight<-as.double(df$PatientWeight)
+#' p1<-bbggboxplot(data=df,factor="PatientWeight",group="PatientClass",uniquecounts="PatID",ylabel="Anzahl",bin=1)
+#' p1
+#'
+#'@export
+bbggboxplot<-function(data, factor,group ,uniquecounts,ylabel="Anzahl", xlabel=NULL,bin=1,xrotate=FALSE,
+                      facet=NULL){
   require(ggplot2)
   require(dplyr)
   if (is.null(xlabel))
@@ -545,7 +571,7 @@ bbggboxplot<-function(data, factor,group ,uniquecounts,ylabel="Anzahl", xlabel=N
   mediane<-if (is.null(facet)){bdaten%>%group_by(bgroup)%>%summarise(med=median(bfactor))}else{bdaten%>%group_by(bfacet,bgroup)%>%summarise(med=median(as.numeric(bfactor)))}
   g<- ggplot(bdaten, aes(x=bgroup , y=bfactor))
   if (!is.null(facet)){g<-g+facet_wrap(~bfacet)}
-  g<-g+ geom_boxplot(binwidth=bin, colour="black", fill="#004992", alpha = 1/2)+theme_minimal(base_size = 10) +
+  g<-g+ geom_boxplot( colour="black", fill="#004992", alpha = 1/2)+theme_minimal(base_size = 10) +
     theme(axis.title = element_text(vjust=0.1))+labs(x=xlabel,y=ylabel)
   if(xrotate){g<-g+theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))}
 
