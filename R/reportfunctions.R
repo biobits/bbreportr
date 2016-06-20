@@ -245,31 +245,37 @@ bbsummarizetab<-function(data,var,group=NULL,caption=NULL,total=TRUE,dec=1,split
 #########################################################
 # BArplot with ggplot
 #########################################################
-#' Creates a markdown Crosstable with 1 dimensions and summary of one variable (Mean,Sd,median 1,2nd quantile, Counts)
+#' Streamlines the creation of a barplot for primitive counting  using ggplot2
 #'
 #'
 #'
 #' @param data the dataframe to use
-#' @param var the variable to count
-#' @param group to group "var" by
-#' @param caption of the table
-#' @param total sum of columns and rows (default= TRUE)
-#' @param dec decimal points (default =1)
-#' @param split.tables where to split wide tables to separate tables. The default value is 300 characters
-#' @param margin index number (1 for rows, etc.)
-#' @param table.continues: string (default: 'Tabelle wird fortgesetzt') passed to pandoc.table to be used as caption for long (split) without a use defined caption
-#' @param groupname column header for groups
-#' @param orderby the column to order by
+#' @param factor to group the data by
+#' @param uniquecounts the variable to count
+#' @param countslab lable of the y-axis
+#' @param xlab label of x-axis
+#' @param xrotate if true labels of x-axis are rotation by 90°
+#' @param facet the factor to facet the plot by
+#' @param prop if true the proportions will be ploted
+#' @param xaxisorder vector of values to sort the values of "factor"
+#' @param horizontal if ture a horizontal barplot is ploted
+#' @param stackpar if the name of a variable is given a stacked barplot will be generated
+#' @param facetncol the amount of column the facet plot is generated to
+#' @param stacktitle the title of the stacked variable default="Gruppe"
+#' @param facetscales the scale = "free"
+#' @param cex.datalabel fontsize of datalabels default=2,
+#' @param datalabel if true the data will be labeld default=TRUE
 
 #'
 #' @author Stefan Bartels, \email{email@biobits.eu}
 #'
 #' @examples
-#' PatientWeight<-c(66.5,82.2,74.8,70.2,95.7,55.8,59.2,77.2,75.0,75.0,102.8,62.8,65.3)
+#' PatID<-seq(1,13)
+#' PatientWeightClass<-c("61-70","41-50","61-70","41-50","61-70","71-80","81-90","81-90","71-80","81-90","81-90","91-100","61-70")
 #' PatientClass<-c("ClassA","ClassB","ClassB","ClassC","ClassA","ClassC", "ClassA","ClassB","ClassA","ClassC","ClassA","ClassA","ClassA")
-#' df<-as.data.frame(cbind(PatientWeight,PatientClass))
-#' tab<-bbsummarizetab(data=df,var="PatientWeight",group="PatientClass",caption="Summary of patients weight",total=T,dec=2,groupname="Classes")
-#' tab
+#' df<-as.data.frame(cbind(PatID,PatientWeightClass,PatientClass))
+#' p1<-bbbarplot(data=df,"PatientWeightClass","PatID",countslab="Anzahl", xlab=NULL,xrotate=FALSE,stackpar="PatientClass",stacktitle="PatientClass",datalabel=TRUE)
+#' p1
 #'
 #'@export
 bbbarplot<-function(data, factor,uniquecounts,countslab="Anzahl", xlab=NULL,xrotate=FALSE,facet=NULL,prop=FALSE,xaxisorder=NULL,
@@ -361,7 +367,19 @@ bbbarplot<-function(data, factor,uniquecounts,countslab="Anzahl", xlab=NULL,xrot
 ##################################################################
 # Legt den Pfad zu den Reporttemplates als Globale Variable an
 ##################################################################
-rSetTplPath<-function(x){
+#' Set the Path to Report Template Folder as global variable
+#'
+#'
+#'
+#' @param x path path to folder
+
+#' @author Stefan Bartels, \email{email@biobits.eu}
+#'
+#' @examples
+#' bbSetTplPath("c:/temp/Test")
+#'
+#'@export
+bbSetTplPath<-function(x){
 
   TplPath<<-x
   return(TplPath)
@@ -370,7 +388,19 @@ rSetTplPath<-function(x){
 ##################################################################
 # Gibt unter Verwendung der Globaken Variablen TplPath das Reporttemplate zurück
 ##################################################################
-rGetTpl<-function(x){
+#' Get the full Path for a Report Template based on the predefined Path by "bbSetTplPath"
+#'
+#'
+#'
+#' @param x Name of .Rmdd or .Rnw template
+
+#' @author Stefan Bartels, \email{email@biobits.eu}
+#'
+#' @examples
+#' report<-bbGetTpl("c:/temp/Test.Rmd")
+#'
+#'@export
+bbGetTpl<-function(x){
 
 
   return(paste(TplPath,"/",x,sep=""))
@@ -380,7 +410,19 @@ rGetTpl<-function(x){
 ##################################################################
 # Wrapperfuncction for knit_expand
 ##################################################################
-r_report<-function(file,...){
+#' Wrapper for knit_expand
+#'
+#'
+#'
+#' @param file pthe path to file
+
+#' @author Stefan Bartels, \email{email@biobits.eu}
+#'
+#' @examples
+#' bbreport("c:/temp/Test.Rmd")
+#'
+#'@export
+bbreport<-function(file,...){
 
   scr<-knit_expand(file,...)
   return(knit(text = unlist(scr), quiet = TRUE))
@@ -391,14 +433,35 @@ r_report<-function(file,...){
 ##################################################################
 # Wrapperfuncction for german dates
 ##################################################################
-r_dedate<-function(x){
+#' Formats a Datestring to German Date format (dd-mm-yyyy)
+#'
+#'
+#'
+#' @param x date string
+
+#' @author Stefan Bartels, \email{email@biobits.eu}
+#'
+#' @examples
+#' bbdedate("2016-11-05")
+#'
+#'@export
+bbdedate<-function(x){
 
   return(strftime(x,"%d.%m.%Y"))
 }
 ##################################################################
 # Wrapperfuncction for latex '\\cleardoublepage' tag withhin markdown to control pagination in pdf output
 ##################################################################
-r_clearpage<-function(){
+#' Wrapperfuncction for latex '\\cleardoublepage' tag withhin markdown to control pagination in pdf output
+#'
+#'
+#' @author Stefan Bartels, \email{email@biobits.eu}
+#'
+#' @examples
+#' bbclearpage()
+#'
+#'@export
+bbclearpage<-function(){
 
   return(paste("\\cleardoublepage \n"))
 }
@@ -407,7 +470,34 @@ r_clearpage<-function(){
 #########################################################
 # histogram with ggplot
 #########################################################
-r_gghistplot<-function(data, factor,uniquecounts,countslab="Anzahl", xlabel=NULL,bin=1,facet=NULL,dens=FALSE){
+#' Streamlines plotting of a histogramm using ggplot2
+#'
+#'
+#'
+#' @param data
+#' @param factor
+#' @param uniquecounts
+#' @param countslab ="Anzahl"
+#' @param xlabel =NULL
+#' @param bin default=1
+#' @param facet default=NULL
+#' @param dens if ture a density plot wil be performed default=FALSE
+
+#' @author Stefan Bartels, \email{email@biobits.eu}
+#'
+#' @examples
+#' PatID<-seq(1,50)
+#' PatientWeight<-runif(50, min=40, max=100)
+#' PatientWeightClass<-c("61-70","41-50","61-70","41-50","61-70","71-80","81-90","81-90","71-80","81-90","81-90","91-100","61-70")
+#' PatientClass<-c("ClassA","ClassB","ClassB","ClassC","ClassA","ClassC", "ClassA","ClassB","ClassA","ClassC","ClassA","ClassA","ClassA")
+#' PatientClass2<-seq(1,50,50)
+
+#' df<-as.data.frame(cbind(PatID,PatientWeight,PatientClass))
+#' p1<-bbgghistplot(data=df,"PatientWeight","PatID",countslab="Anzahl",bin=10)
+#' p1
+#'
+#'@export
+bbgghistplot<-function(data, factor,uniquecounts,countslab="Anzahl", xlabel=NULL,bin=1,facet=NULL,dens=FALSE){
   require(ggplot2)
   if (is.null(xlabel))
   {xlabel<-factor}
@@ -444,7 +534,7 @@ r_gghistplot<-function(data, factor,uniquecounts,countslab="Anzahl", xlabel=NULL
 #########################################################
 # boxplot with ggplot
 #########################################################
-r_ggboxplot<-function(data, factor,group ,uniquecounts,ylabel="Anzahl", xlabel=NULL,bin=1,xrotate=FALSE,facet=NULL){
+bbggboxplot<-function(data, factor,group ,uniquecounts,ylabel="Anzahl", xlabel=NULL,bin=1,xrotate=FALSE,facet=NULL){
   require(ggplot2)
   require(dplyr)
   if (is.null(xlabel))
@@ -466,7 +556,7 @@ r_ggboxplot<-function(data, factor,group ,uniquecounts,ylabel="Anzahl", xlabel=N
 #########################################################
 #Gibt einen "Count Distinct" für die Spalte eines Dataframes zurück Achtung: NA wird ausgeschlossen
 #########################################################
-rDistinctCount<-function(data){
+bbDistinctCount<-function(data){
 
   return(length(na.omit(unique(data))))
 
@@ -477,7 +567,7 @@ rDistinctCount<-function(data){
 # Return: bool
 #########################################################
 
-rChkDataFrame<-function(data){
+bbChkDataFrame<-function(data){
   retval<-FALSE
   if(length(unique(data[,1]))>0){
     retval<-TRUE
