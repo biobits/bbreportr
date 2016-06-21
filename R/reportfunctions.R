@@ -27,6 +27,8 @@
 #'@export
 ctab <- function(row, col, margin = 1, dec = 1, percs = FALSE, total = FALSE){
   #tab <- as.table(table(row[[1]],col[,1])) #stb 20160607: row war data.frame jetzt vector
+  if (is.data.frame(row)==T){row<-row[[1]]}
+  if (is.data.frame(col)==T){col<-col[[1]]}
   tab <- as.table(table(row,col)) #stb 20160607: row war data.frame jetzt vector
   innermargin<-1
   if (margin==2){innermargin<-2}
@@ -99,11 +101,11 @@ ctab <- function(row, col, margin = 1, dec = 1, percs = FALSE, total = FALSE){
 #'@export
 bbcounttab<-function(row=NULL,col=NULL,data,uniquecounts=NULL,caption=NULL,percs=TRUE,total=TRUE,dec=1,split.tables=300,margin=3,
                      table.continues="Tabelle wird fortgesetzt" ,sortcounts=TRUE,split.cells=30,ucol.name="Patienten [n/(%)]"){
-  panderOptions('table.continues',table.continues)
-  panderOptions('table.caption.prefix','Table: ')
+  pander::panderOptions('table.continues',table.continues)
+  pander::panderOptions('table.caption.prefix','Table: ')
   # panderOptions('table.caption.prefix','Tabelle: ')
   # In case we have only one dimension for our table (simplifies things)
-  data<-drop.levels(data)
+  data<-bbsurvr::drop.levels(data)
   if ((is.null(row)==TRUE) | (is.null(col)==TRUE)){
     fac<-coalesce(row,col)
     if(is.null(uniquecounts)==TRUE){daten<-data[,c(fac)]}else{daten<-unique(data[,c(fac,uniquecounts)])}
@@ -139,7 +141,7 @@ bbcounttab<-function(row=NULL,col=NULL,data,uniquecounts=NULL,caption=NULL,percs
     #set.alignment(default = "centre", row.names = "left")
   }
   set.alignment(default = "centre", row.names = "left")
-  pandoc.table(tab,split.tables=split.tables,split.cells=split.cells,style="multiline",caption=caption)
+  pander::pandoc.table(tab,split.tables=split.tables,split.cells=split.cells,style="multiline",caption=caption)
 }
 
 #############################
@@ -150,7 +152,7 @@ bbcounttab<-function(row=NULL,col=NULL,data,uniquecounts=NULL,caption=NULL,percs
 
 #' Creates a markdown Crosstable with 1 dimensions and summary of one variable (Mean,Sd,median 1,2nd quantile, Counts)
 #'
-#'
+#' @import dplyr
 #'
 #' @param data the dataframe to use
 #' @param var the variable to count
@@ -177,7 +179,7 @@ bbcounttab<-function(row=NULL,col=NULL,data,uniquecounts=NULL,caption=NULL,percs
 #'@export
 bbsummarizetab<-function(data,var,group=NULL,caption=NULL,total=TRUE,dec=1,split.tables=300,margin=3,
                          table.continues="Tabelle wird fortgesetzt",groupname=NULL,orderby=NULL ){
-  require(dplyr)# hier mus as.numerich verwenbdet werden wg bug: https://github.com/hadley/dplyr/issues/893
+ # require(dplyr)# hier mus as.numerich verwenbdet werden wg bug: https://github.com/hadley/dplyr/issues/893
 
   data<-subset(data,is.na(data[,var])==FALSE)
 
@@ -235,11 +237,11 @@ bbsummarizetab<-function(data,var,group=NULL,caption=NULL,total=TRUE,dec=1,split
     if(is.null(groupname)==FALSE){colnames(tab)[1]<-groupname }else{colnames(tab)[1]<-"Gruppe"}
   }
   else {tab<-tab0[,1:length(tab0)]}
-  panderOptions('table.continues',table.continues)
-  panderOptions('table.caption.prefix','Table: ')
-  if(is.null(group)==FALSE){emphasize.strong.cols(1)}
-  set.alignment(default = "centre", row.names = "left")
-  pandoc.table(tab,split.tables=split.tables,style="multiline",caption=caption)
+  pander::panderOptions('table.continues',table.continues)
+  pander::panderOptions('table.caption.prefix','Table: ')
+  if(is.null(group)==FALSE){pander::emphasize.strong.cols(1)}
+  pander::set.alignment(default = "centre", row.names = "left")
+  pander::pandoc.table(tab,split.tables=split.tables,style="multiline",caption=caption)
 
 }
 #########################################################
@@ -247,7 +249,7 @@ bbsummarizetab<-function(data,var,group=NULL,caption=NULL,total=TRUE,dec=1,split
 #########################################################
 #' Streamlines the creation of a barplot for primitive counting  using ggplot2
 #'
-#'
+#' @import ggplot2
 #'
 #' @param data the dataframe to use
 #' @param factor to group the data by
@@ -282,9 +284,9 @@ bbbarplot<-function(data, factor,uniquecounts,countslab="Anzahl", xlab=NULL,xrot
                       horizontal=FALSE,stackpar=NULL,facetncol=2,stacktitle="Gruppe",facetscales = "free",cex.datalabel=2,
                       datalabel=TRUE
 ){
-  require(ggplot2)
+  #require(ggplot2)
 
-  require(RColorBrewer)
+  #require(RColorBrewer)
   hjustdat=0.5 # default horizontal adjustment for datalabels
   vjustdat=-.2
   #names(data[,factor])<-"ufact"
@@ -332,7 +334,7 @@ bbbarplot<-function(data, factor,uniquecounts,countslab="Anzahl", xlab=NULL,xrot
     if(nstack==2){
       cols<-c("#E41A1C" ,"#4D74AB")}
     else{
-      cols<-getBBColors(n_distinct(imgdat$stack))}
+      cols<-bbsurvr::getBBColors(n_distinct(imgdat$stack))}
     textpos<-position_stack()
     bp<-ggplot(imgdat, aes(xfac, ycount,fill = stack))+geom_bar(stat="identity", colour = "darkgrey", alpha = 0.8
                                                                 ,position=position_stack())+scale_fill_manual(values = cols,
@@ -424,8 +426,8 @@ bbGetTpl<-function(x){
 #'@export
 bbreport<-function(file,...){
 
-  scr<-knit_expand(file,...)
-  return(knit(text = unlist(scr), quiet = TRUE))
+  scr<-knitr::knit_expand(file,...)
+  return(knitr::knit(text = unlist(scr), quiet = TRUE))
 
 }
 
@@ -472,7 +474,8 @@ bbclearpage<-function(){
 #########################################################
 #' Streamlines plotting of a histogramm using ggplot2
 #'
-#'
+#' @import ggplot2
+#' @import dplyr
 #'
 #' @param data dataframe
 #' @param factor the column to count
@@ -498,7 +501,7 @@ bbclearpage<-function(){
 #'
 #'@export
 bbgghistplot<-function(data, factor,uniquecounts,countslab="Anzahl", xlabel=NULL,bin=1,facet=NULL,dens=FALSE){
-  require(ggplot2)
+  #require(ggplot2)
   if (is.null(xlabel))
   {xlabel<-factor}
   if(is.null(facet)){hdaten<-unique(data[,c(factor,uniquecounts)])
@@ -536,7 +539,8 @@ bbgghistplot<-function(data, factor,uniquecounts,countslab="Anzahl", xlabel=NULL
 #########################################################
 #' boxplot with ggplot
 #'
-#'
+#' @import ggplot2
+#' @import dplyr
 #'
 #' @param data dataframe
 #' @param factor the factor to count
@@ -561,8 +565,8 @@ bbgghistplot<-function(data, factor,uniquecounts,countslab="Anzahl", xlabel=NULL
 #'@export
 bbggboxplot<-function(data, factor,group ,uniquecounts,ylabel="Anzahl", xlabel=NULL,xrotate=FALSE,
                       facet=NULL){
-  require(ggplot2)
-  require(dplyr)
+  #require(ggplot2)
+  #require(dplyr)
   if (is.null(xlabel))
   {xlabel<-factor}
   bdaten<- if (is.null(facet)){unique(data[,c(factor,group,uniquecounts)])} else {unique(data[,c(factor,group,facet,uniquecounts)])}
@@ -661,16 +665,16 @@ multiplot <- function(..., plotlist=NULL, cols=1, layout=NULL) {
 
   } else {
     # Set up the page
-    grid.newpage()
-    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+    grid::grid.newpage()
+    grid::pushViewport(grid::viewport(layout = grid::grid.layout(nrow(layout), ncol(layout))))
 
     # Make each plot, in the correct location
     for (i in 1:numPlots) {
       # Get the i,j matrix positions of the regions that contain this subplot
       matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
 
-      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
-                                      layout.pos.col = matchidx$col))
+      print(plots[[i]], vp = grid::viewport(layout.pos.row = matchidx$row,
+                                            layout.pos.col = matchidx$col))
     }
   }
 }
@@ -695,6 +699,10 @@ multiplot <- function(..., plotlist=NULL, cols=1, layout=NULL) {
 ##########################################################################################################
 #' Plot of Map
 #'
+#'  #@import rgdal
+#' # @import maptools
+#' # @import ggplot2
+#'
 #' @param x dataframew with long and lat
 #' @param shapefile data source name (interpretation varies by driver — for some drivers, dsn is a file name, but may also be a folder)
 #' @param layer layer name (varies by driver, may be a file name without extension)
@@ -710,9 +718,9 @@ multiplot <- function(..., plotlist=NULL, cols=1, layout=NULL) {
 #'
 oncosys_map<-function(x,count.breaks=waiver(),shapefile,layer){
 
-  require("rgdal") # requires sp, will use proj.4 if installed
-  require("maptools")
-  require("ggplot2")
+  #require("rgdal") # requires sp, will use proj.4 if installed
+ # require("maptools")
+  #require("ggplot2")
 
   pats<-x
 

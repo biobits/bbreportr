@@ -14,7 +14,9 @@ oncosys_map(x, count.breaks = waiver(), shapefile, layer)
 \item{layer}{layer name (varies by driver, may be a file name without extension)}
 }
 \description{
-Plot of Map
+#@import rgdal
+# @import maptools
+# @import ggplot2
 }
 \examples{
 readOGR(dsn=paste(c(GetRDirPath(),"/Data/ShapeGER/"),collapse=""), layer="DEU_adm1",verbose=FALSE)

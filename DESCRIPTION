@@ -15,5 +15,6 @@ Imports:
     dplyr,
     grid,
     maptools,
-    rgdal
+    rgdal,
+    knitr
 RoxygenNote: 5.0.1
