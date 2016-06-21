@@ -474,14 +474,14 @@ bbclearpage<-function(){
 #'
 #'
 #'
-#' @param data
-#' @param factor
-#' @param uniquecounts
-#' @param countslab ="Anzahl"
-#' @param xlabel =NULL
-#' @param bin default=1
-#' @param facet default=NULL
-#' @param dens if ture a density plot wil be performed default=FALSE
+#' @param data dataframe
+#' @param factor the column to count
+#' @param uniquecounts the column that determines the unique id
+#' @param countslab  label of y axis default="Anzahl"
+#' @param xlabel label of x axis default=NULL
+#' @param bin bandwidth default=1
+#' @param facet if given the plot wil be printed as facets default=NULL
+#' @param dens if TRUE a density plot wil be performed default=FALSE
 
 #' @author Stefan Bartels, \email{email@biobits.eu}
 #'
@@ -538,14 +538,14 @@ bbgghistplot<-function(data, factor,uniquecounts,countslab="Anzahl", xlabel=NULL
 #'
 #'
 #'
-#' @param data
-#' @param factor
-#' @param uniquecounts
-#' @param countslab ="Anzahl"
-#' @param xlabel =NULL
-#' @param bin default=1
-#' @param facet default=NULL
-#' @param dens if ture a density plot wil be performed default=FALSE
+#' @param data dataframe
+#' @param factor the factor to count
+#' @param group the group
+#' @param uniquecounts the unique counts
+#' @param ylabel the label of y axis default="Anzahl"
+#' @param xlabel the label of x axis default=NULL
+#' @param xrotate if TRUE the x and y axis will switch default=FALSE
+#' @param facet if a facet is given plot will be faceted default=NULL
 
 #' @author Stefan Bartels, \email{email@biobits.eu}
 #'
@@ -559,7 +559,7 @@ bbgghistplot<-function(data, factor,uniquecounts,countslab="Anzahl", xlabel=NULL
 #' p1
 #'
 #'@export
-bbggboxplot<-function(data, factor,group ,uniquecounts,ylabel="Anzahl", xlabel=NULL,bin=1,xrotate=FALSE,
+bbggboxplot<-function(data, factor,group ,uniquecounts,ylabel="Anzahl", xlabel=NULL,xrotate=FALSE,
                       facet=NULL){
   require(ggplot2)
   require(dplyr)
@@ -582,6 +582,16 @@ bbggboxplot<-function(data, factor,group ,uniquecounts,ylabel="Anzahl", xlabel=N
 #########################################################
 #Gibt einen "Count Distinct" für die Spalte eines Dataframes zurück Achtung: NA wird ausgeschlossen
 #########################################################
+#' Performs a distinct count of Items in a vector (omits NA). Basically a wrapper for length() and unique()
+#'
+#' @param data a vector
+#'
+#' @author Stefan Bartels, \email{email@biobits.eu}
+#'
+#' @examples
+#' bbDistinctCount(c(12,15,12,17,19,22,24,23,23,66,78,65,34,NA))
+#'
+#'@export
 bbDistinctCount<-function(data){
 
   return(length(na.omit(unique(data))))
@@ -592,7 +602,17 @@ bbDistinctCount<-function(data){
 # Prüft, ob ein Dataframe Daten hat
 # Return: bool
 #########################################################
-
+#' Checks if a Dataframe is empty or not. If TRUE
+#'
+#' @param data a dataframe
+#'
+#' @author Stefan Bartels, \email{email@biobits.eu}
+#'
+#' @examples
+#' df<-as.data.frame(c("a","b","c"))
+#' bbChkDataFrame(df)
+#'
+#'@export
 bbChkDataFrame<-function(data){
   retval<-FALSE
   if(length(unique(data[,1]))>0){
@@ -601,18 +621,25 @@ bbChkDataFrame<-function(data){
   return(retval)
 
 }
-# Multiple plot function
-#
-# ggplot objects can be passed in ..., or to plotlist (as a list of ggplot objects)
-# - cols:   Number of columns in layout
-# - layout: A matrix specifying the layout. If present, 'cols' is ignored.
-#
-# If the layout is something like matrix(c(1,2,3,3), nrow=2, byrow=TRUE),
-# then plot 1 will go in the upper left, 2 will go in the upper right, and
-# 3 will go all the way across the bottom.
-#
 
-multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+#######################################################################################################
+#######################################################################################################
+#' Multiple plot function
+#'
+#' ggplot objects can be passed in ..., or to plotlist (as a list of ggplot objects)
+#' If the layout is something like matrix(c(1,2,3,3), nrow=2, byrow=TRUE),
+#' then plot 1 will go in the upper left, 2 will go in the upper right, and
+#' 3 will go all the way across the bottom.
+#'
+#' @param cols:   Number of columns in layout
+#' @param layout: A matrix specifying the layout. If present, 'cols' is ignored.
+#' @param plotlist: vector of plots
+#'
+#' @author Stefan Bartels, \email{email@biobits.eu}
+#'
+#'
+#'@export
+multiplot <- function(..., plotlist=NULL, cols=1, layout=NULL) {
   require(grid)
 
   # Make a list from the ... arguments and plotlist
@@ -666,8 +693,22 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 # Plot der rgb Praxenkarte
 #
 ##########################################################################################################
-
-oncosys_map<-function(x,count.breaks=waiver()){
+#' Plot of Map
+#'
+#' @param x dataframew with long and lat
+#' @param shapefile data source name (interpretation varies by driver — for some drivers, dsn is a file name, but may also be a folder)
+#' @param layer layer name (varies by driver, may be a file name without extension)
+#'
+#'
+#' @author Stefan Bartels, \email{email@biobits.eu}
+#'
+#' @examples
+#' readOGR(dsn=paste(c(GetRDirPath(),"/Data/ShapeGER/"),collapse=""), layer="DEU_adm1",verbose=FALSE)
+#'
+#'
+#'@export
+#'
+oncosys_map<-function(x,count.breaks=waiver(),shapefile,layer){
 
   require("rgdal") # requires sp, will use proj.4 if installed
   require("maptools")
@@ -693,7 +734,7 @@ oncosys_map<-function(x,count.breaks=waiver()){
                            plot.title = element_text(size=22)))
 
 
-  deu = readOGR(dsn=paste(c(GetRDirPath(),"/Data/ShapeGER/"),collapse=""), layer="DEU_adm1",verbose=FALSE)
+  deu = readOGR(dsn=shapefile, layer=layer,verbose=FALSE)
   deu@data$id=rownames(deu@data)
   deu_robin <- spTransform(deu, CRS("+proj=merc"))
   deu_df_robin <- fortify(deu_robin)
@@ -712,7 +753,7 @@ oncosys_map<-function(x,count.breaks=waiver()){
     aes(long,lat,group=group) +
     geom_polygon(colour= "#4B4B4B", fill="#DEDEDE") +
     geom_path(color="#4D74AB") + theme_opts +
-    geom_point(data=pats_robin_df, aes(LONGITUDE ,LATITUDE, group=NULL, fill=NULL, size=Patienten),, color="#4D74AB", alpha=I(8/10))+
+    geom_point(data=pats_robin_df, aes(LONGITUDE ,LATITUDE, group=NULL, fill=NULL, size=Patienten), color="#4D74AB", alpha=I(8/10))+
     coord_equal() +
     scale_fill_manual(values=c("black", "white"), guide="none")+
     scale_size_continuous(range=c(5,24),breaks=count.breaks)

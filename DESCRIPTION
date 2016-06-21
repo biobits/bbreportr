@@ -10,5 +10,10 @@ LazyData: TRUE
 Imports:
     pander,
     bbsurvr,
-    ggplot2
+    ggplot2,
+    RColorBrewer,
+    dplyr,
+    grid,
+    maptools,
+    rgdal
 RoxygenNote: 5.0.1
