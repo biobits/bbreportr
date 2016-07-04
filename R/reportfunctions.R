@@ -91,6 +91,8 @@ ctab <- function(row, col, margin = 1, dec = 1, percs = FALSE, total = FALSE){
 #'
 #' @author Stefan Bartels, \email{email@biobits.eu}
 #'
+#' @import pander
+#'
 #' @examples
 #' PatientCohort<-c("CohortA","CohortA","CohortA","CohortB","CohortB","CohortB","CohortB","CohortB","CohortB","CohortC","CohortC","CohortC","CohortC")
 #' PatientClass<-c("ClassA","ClassB","ClassB","ClassC","ClassA","ClassC", "ClassA","ClassB","ClassA","ClassC","ClassA","ClassA","ClassA")
@@ -107,7 +109,7 @@ bbcounttab<-function(row=NULL,col=NULL,data,uniquecounts=NULL,caption=NULL,percs
   # In case we have only one dimension for our table (simplifies things)
   data<-bbsurvr::drop.levels(data)
   if ((is.null(row)==TRUE) | (is.null(col)==TRUE)){
-    fac<-coalesce(row,col)
+    fac<-bbsurvr::coalesce(row,col)
     if(is.null(uniquecounts)==TRUE){daten<-data[,c(fac)]}else{daten<-unique(data[,c(fac,uniquecounts)])}
 
     daten<-cbind(daten,freq=1)
@@ -118,9 +120,9 @@ bbcounttab<-function(row=NULL,col=NULL,data,uniquecounts=NULL,caption=NULL,percs
       stab<-xtabs(freq~daten[,fac],daten)
       ptab<-round(prop.table(stab)*100,dec)
     }
-    mlen<-coalesce(nrow(stab),length(names(stab)))
+    mlen<-bbsurvr::coalesce(nrow(stab),length(names(stab)))
     z <- matrix(NA, ncol = mlen,  byrow = TRUE)
-    colnames(z) <- coalesce(rownames(stab),names(stab))
+    colnames(z) <- bbsurvr::coalesce(rownames(stab),names(stab))
     if (is.null(dim(stab))){
       z[1,] <- paste(stab," (", signif(ptab,3),")", sep = "")
     }else{
@@ -140,7 +142,7 @@ bbcounttab<-function(row=NULL,col=NULL,data,uniquecounts=NULL,caption=NULL,percs
     # alignment der tabelle
     #set.alignment(default = "centre", row.names = "left")
   }
-  set.alignment(default = "centre", row.names = "left")
+  pander::set.alignment(default = "centre", row.names = "left")
   pander::pandoc.table(tab,split.tables=split.tables,split.cells=split.cells,style="multiline",caption=caption)
 }
 
