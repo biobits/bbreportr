@@ -19,4 +19,3 @@ report<-bbGetTpl("c:/temp/Test.Rmd")
 \author{
 Stefan Bartels, \email{email@biobits.eu}
 }
-

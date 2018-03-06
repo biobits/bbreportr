@@ -19,4 +19,3 @@ bbreport("c:/temp/Test.Rmd")
 \author{
 Stefan Bartels, \email{email@biobits.eu}
 }
-

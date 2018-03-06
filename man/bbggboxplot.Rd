@@ -40,4 +40,3 @@ p1
 \author{
 Stefan Bartels, \email{email@biobits.eu}
 }
-

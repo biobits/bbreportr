@@ -26,4 +26,3 @@ readOGR(dsn=paste(c(GetRDirPath(),"/Data/ShapeGER/"),collapse=""), layer="DEU_ad
 \author{
 Stefan Bartels, \email{email@biobits.eu}
 }
-

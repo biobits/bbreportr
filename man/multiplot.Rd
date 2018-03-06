@@ -22,4 +22,3 @@ then plot 1 will go in the upper left, 2 will go in the upper right, and
 \author{
 Stefan Bartels, \email{email@biobits.eu}
 }
-

@@ -20,4 +20,3 @@ bbChkDataFrame(df)
 \author{
 Stefan Bartels, \email{email@biobits.eu}
 }
-

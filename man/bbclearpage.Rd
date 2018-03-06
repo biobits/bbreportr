@@ -16,4 +16,3 @@ bbclearpage()
 \author{
 Stefan Bartels, \email{email@biobits.eu}
 }
-

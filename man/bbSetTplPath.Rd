@@ -19,4 +19,3 @@ bbSetTplPath("c:/temp/Test")
 \author{
 Stefan Bartels, \email{email@biobits.eu}
 }
-

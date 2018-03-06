@@ -29,4 +29,3 @@ t<-ctab(row=PatientCohort,col=PatientClass,margin=1,total=T,perc=T)
 \author{
 Stefan Bartels, \email{email@biobits.eu}
 }
-

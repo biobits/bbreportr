@@ -19,4 +19,3 @@ bbdedate("2016-11-05")
 \author{
 Stefan Bartels, \email{email@biobits.eu}
 }
-

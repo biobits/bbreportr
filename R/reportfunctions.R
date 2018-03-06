@@ -107,9 +107,9 @@ bbcounttab<-function(row=NULL,col=NULL,data,uniquecounts=NULL,caption=NULL,percs
   pander::panderOptions('table.caption.prefix','Table: ')
   # panderOptions('table.caption.prefix','Tabelle: ')
   # In case we have only one dimension for our table (simplifies things)
-  data<-bbsurvr::drop.levels(data)
+  data<-bbhelper::drop.levels(data)
   if ((is.null(row)==TRUE) | (is.null(col)==TRUE)){
-    fac<-bbsurvr::coalesce(row,col)
+    fac<-bbhelper::coalesce(row,col)
     if(is.null(uniquecounts)==TRUE){daten<-data[,c(fac)]}else{daten<-unique(data[,c(fac,uniquecounts)])}
 
     daten<-cbind(daten,freq=1)
@@ -120,9 +120,9 @@ bbcounttab<-function(row=NULL,col=NULL,data,uniquecounts=NULL,caption=NULL,percs
       stab<-xtabs(freq~daten[,fac],daten)
       ptab<-round(prop.table(stab)*100,dec)
     }
-    mlen<-bbsurvr::coalesce(nrow(stab),length(names(stab)))
+    mlen<-bbhelper::coalesce(nrow(stab),length(names(stab)))
     z <- matrix(NA, ncol = mlen,  byrow = TRUE)
-    colnames(z) <- bbsurvr::coalesce(rownames(stab),names(stab))
+    colnames(z) <- bbhelper::coalesce(rownames(stab),names(stab))
     if (is.null(dim(stab))){
       z[1,] <- paste(stab," (", signif(ptab,3),")", sep = "")
     }else{
@@ -334,9 +334,9 @@ bbbarplot<-function(data, factor,uniquecounts,countslab="Anzahl", xlab=NULL,xrot
   } else{
     nstack<-n_distinct(imgdat$stack)
     if(nstack==2){
-      cols<-c("#E41A1C" ,"#4D74AB")}
+      cols<-bbhelper::getBBColors(n_distinct(imgdat$stack))} #cols<-c("#E41A1C" ,"#4D74AB")} mal sehen
     else{
-      cols<-bbsurvr::getBBColors(n_distinct(imgdat$stack))}
+      cols<-bbhelper::getBBColors(n_distinct(imgdat$stack))}
     textpos<-position_stack()
     bp<-ggplot(imgdat, aes(xfac, ycount,fill = stack))+geom_bar(stat="identity", colour = "darkgrey", alpha = 0.8
                                                                 ,position=position_stack())+scale_fill_manual(values = cols,

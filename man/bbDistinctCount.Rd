@@ -19,4 +19,3 @@ bbDistinctCount(c(12,15,12,17,19,22,24,23,23,66,78,65,34,NA))
 \author{
 Stefan Bartels, \email{email@biobits.eu}
 }
-
