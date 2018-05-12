@@ -283,8 +283,8 @@ bbsummarizetab<-function(data,var,group=NULL,caption=NULL,total=TRUE,dec=1,split
 #'
 #'@export
 bbbarplot<-function(data, factor,uniquecounts,countslab="Anzahl", xlab=NULL,xrotate=FALSE,facet=NULL,prop=FALSE,xaxisorder=NULL,
-                      horizontal=FALSE,stackpar=NULL,facetncol=2,stacktitle="Gruppe",facetscales = "free",cex.datalabel=2,
-                      datalabel=TRUE
+                      horizontal=FALSE,stackpar=NULL,stackreverse=FALSE,facetncol=2,stacktitle="Gruppe",facetscales = "free",cex.datalabel=2,
+                      datalabel=TRUE,palette="main",palettereverse=FALSE
 ){
   #require(ggplot2)
 
@@ -330,21 +330,22 @@ bbbarplot<-function(data, factor,uniquecounts,countslab="Anzahl", xlab=NULL,xrot
 
   if(is.null(stackpar)){
     textpos<-position_dodge(width=0.9)
-    bp<-ggplot(imgdat, aes(xfac, ycount))+geom_bar(stat="identity",fill = "#004992", colour = "darkgrey", alpha = 0.8,position=position_dodge())
+    bp<-ggplot(imgdat, aes(xfac, ycount))+geom_bar(stat="identity",fill = "#EF7B05", colour = "darkgrey", alpha = 0.8,position=position_dodge())
   } else{
     nstack<-n_distinct(imgdat$stack)
     if(nstack==2){
       cols<-bbhelper::getBBColors(n_distinct(imgdat$stack))} #cols<-c("#E41A1C" ,"#4D74AB")} mal sehen
     else{
       cols<-bbhelper::getBBColors(n_distinct(imgdat$stack))}
-    textpos<-position_stack()
+    textpos<-position_stack(reverse = stackreverse)
+
     bp<-ggplot(imgdat, aes(xfac, ycount,fill = stack))+geom_bar(stat="identity", colour = "darkgrey", alpha = 0.8
-                                                                ,position=position_stack())+scale_fill_manual(values = cols,
-                                                                                                              name=stacktitle)
+                                                                ,position=position_stack(reverse=stackreverse))+bbhelper::scale_fill_bb(palette = palette,reverse = palettereverse,name=stacktitle)
+                                                                                                                      #+scale_fill_manual(values = cols,name=stacktitle)
     #+scale_fill_brewer(palette = 12)
   }
 
-  bp<-bp+theme_minimal(base_size = 11, base_family = "Helvetica") + theme(axis.title = element_text(vjust=0.1),axis.title.y=element_text(vjust=0.5))+labs(x=xlab,y=countslab)
+  bp<-bp+theme_minimal(base_size = 11, base_family = "sans") + theme(axis.title = element_text(vjust=0.1),axis.title.y=element_text(vjust=0.5))+labs(x=xlab,y=countslab)
   if(!is.null(facet)){bp<-bp+facet_wrap(~facet,ncol=facetncol,scales=facetscales)}
   if(xrotate){bp<-bp+theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))}
 
