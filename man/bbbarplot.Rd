@@ -4,11 +4,12 @@
 \alias{bbbarplot}
 \title{Streamlines the creation of a barplot for primitive counting  using ggplot2}
 \usage{
-bbbarplot(data, factor, uniquecounts, countslab = "Anzahl", xlab = NULL,
-  xrotate = FALSE, facet = NULL, prop = FALSE, xaxisorder = NULL,
-  horizontal = FALSE, stackpar = NULL, facetncol = 2,
-  stacktitle = "Gruppe", facetscales = "free", cex.datalabel = 2,
-  datalabel = TRUE)
+bbbarplot(data, factor, uniquecounts, countslab = "Anzahl",
+  xlab = NULL, xrotate = FALSE, facet = NULL, prop = FALSE,
+  xaxisorder = NULL, horizontal = FALSE, stackpar = NULL,
+  stackreverse = FALSE, facetncol = 2, stacktitle = "Gruppe",
+  facetscales = "free", cex.datalabel = 2, datalabel = TRUE,
+  palette = "main", palettereverse = FALSE)
 }
 \arguments{
 \item{data}{the dataframe to use}

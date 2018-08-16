@@ -1,7 +1,7 @@
 Package: bbreportr
 Type: Package
 Title: Helpers for crosstables, graphics and little function for fast reporting with knitr and markdown
-Version: 0.1.5
+Version: 0.1.6
 Author: Stefan Bartels
 Maintainer: Stefan Bartels <email@biobits.eu>
 Description: Generates markdown summary  1 and 2-dimensional cros tables from dataframes with basic statitistics. Streamlines plotting with ggplot2
@@ -18,4 +18,4 @@ Imports:
     maptools,
     rgdal,
     knitr
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
