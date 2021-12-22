@@ -2,18 +2,25 @@
 % Please edit documentation in R/reportfunctions.R
 \name{bbreport}
 \alias{bbreport}
-\title{Wrapper for knit_expand}
+\title{bbreport}
 \usage{
 bbreport(file, ...)
 }
 \arguments{
 \item{file}{pthe path to file}
+
+\item{...}{other args}
 }
 \description{
+not done yet
+}
+\details{
 Wrapper for knit_expand
 }
 \examples{
+\dontrun{
 bbreport("c:/temp/Test.Rmd")
+}
 
 }
 \author{

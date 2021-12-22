@@ -2,15 +2,20 @@
 % Please edit documentation in R/reportfunctions.R
 \name{bbclearpage}
 \alias{bbclearpage}
-\title{Wrapperfuncction for latex '\\cleardoublepage' tag withhin markdown to control pagination in pdf output}
+\title{bbclearpage}
 \usage{
 bbclearpage()
 }
 \description{
+not done yet
+}
+\details{
 Wrapperfuncction for latex '\\cleardoublepage' tag withhin markdown to control pagination in pdf output
 }
 \examples{
+\dontrun{
 bbclearpage()
+}
 
 }
 \author{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/reportfunctions.R
 \name{bbSetTplPath}
 \alias{bbSetTplPath}
-\title{Set the Path to Report Template Folder as global variable}
+\title{bbSetTplPath}
 \usage{
 bbSetTplPath(x)
 }
@@ -10,10 +10,15 @@ bbSetTplPath(x)
 \item{x}{path path to folder}
 }
 \description{
+not done yet
+}
+\details{
 Set the Path to Report Template Folder as global variable
 }
 \examples{
+\dontrun{
 bbSetTplPath("c:/temp/Test")
+}
 
 }
 \author{

@@ -2,13 +2,24 @@
 % Please edit documentation in R/reportfunctions.R
 \name{bbcounttab}
 \alias{bbcounttab}
-\title{Creates a Crosstable in Markdown format with 2 dimensions and one variable for a unique counting}
+\title{bbcounttab}
 \usage{
-bbcounttab(row = NULL, col = NULL, data, uniquecounts = NULL,
-  caption = NULL, percs = TRUE, total = TRUE, dec = 1,
-  split.tables = 300, margin = 3,
-  table.continues = "Tabelle wird fortgesetzt", sortcounts = TRUE,
-  split.cells = 30, ucol.name = "Patienten [n/(\%)]")
+bbcounttab(
+  row = NULL,
+  col = NULL,
+  data,
+  uniquecounts = NULL,
+  caption = NULL,
+  percs = TRUE,
+  total = TRUE,
+  dec = 1,
+  split.tables = 300,
+  margin = 3,
+  table.continues = "Tabelle wird fortgesetzt",
+  sortcounts = TRUE,
+  split.cells = 30,
+  ucol.name = "Patienten [n/(\%)]"
+)
 }
 \arguments{
 \item{row}{vector containing factors for row}
@@ -16,6 +27,10 @@ bbcounttab(row = NULL, col = NULL, data, uniquecounts = NULL,
 \item{col}{vector containing factors for columns}
 
 \item{data}{the dataframe to get the values from}
+
+\item{uniquecounts}{only unique counts}
+
+\item{caption}{caption of table}
 
 \item{percs}{if TRUE percentage of row or column are displayed (default=TRUE)}
 
@@ -25,28 +40,33 @@ bbcounttab(row = NULL, col = NULL, data, uniquecounts = NULL,
 
 \item{split.tables}{where to split wide tables to separate tables. The default value is 300 characters}
 
-\item{margin}{index number (1 for rows, etc.)}
+\item{margin}{index, or vector of indices to generate margin for}
+
+\item{table.continues}{string (default: 'Tabelle wird fortgesetzt') passed to pandoc.table to be used as caption for long (split) without a use defined caption}
 
 \item{sortcounts}{if TRUE rows will be sorted descendent by counts}
 
 \item{split.cells}{where to split cells' text with line breaks. Default to 30, to disable set to Inf. Can be also supplied as a vector, for each cell separately (if length(split.cells) == number of columns + 1, then first value in split.cells if for row names, and others are for columns). Supports relative (percentage) parameters in combination with split.tables.}
 
-\item{ucol.name}{title of counted values default is "Patienten [n/(%)]"}
-
-\item{margin}{index, or vector of indices to generate margin for}
-
-\item{table.continues:}{string (default: 'Tabelle wird fortgesetzt') passed to pandoc.table to be used as caption for long (split) without a use defined caption}
+\item{ucol.name}{title of counted values default is "Patienten n/(\%)"}
 }
 \description{
+not done yet. But soon.
+}
+\details{
 Creates a Crosstable in Markdown format with 2 dimensions and one variable for a unique counting
 }
 \examples{
-PatientCohort<-c("CohortA","CohortA","CohortA","CohortB","CohortB","CohortB","CohortB","CohortB","CohortB","CohortC","CohortC","CohortC","CohortC")
-PatientClass<-c("ClassA","ClassB","ClassB","ClassC","ClassA","ClassC", "ClassA","ClassB","ClassA","ClassC","ClassA","ClassA","ClassA")
+\dontrun{
+PatientCohort<-c("CohortA","CohortA","CohortA","CohortB","CohortB","CohortB",
+    "CohortB","CohortB","CohortB","CohortC","CohortC","CohortC","CohortC")
+PatientClass<-c("ClassA","ClassB","ClassB","ClassC","ClassA","ClassC",
+    "ClassA","ClassB","ClassA","ClassC","ClassA","ClassA","ClassA")
 df<-as.data.frame(cbind(PatientCohort,PatientClass))
-tab<-bbcounttab(row="PatientCohort",col="PatientClass",data=df,total=T,perc=T,dec=2,ucol.name="Classes")
+tab<-bbcounttab(row="PatientCohort",col="PatientClass",data=df,total=T,perc=T
+                 ,dec=2,ucol.name="Classes")
 tab
-
+}
 }
 \author{
 Stefan Bartels, \email{email@biobits.eu}

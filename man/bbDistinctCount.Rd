@@ -2,18 +2,23 @@
 % Please edit documentation in R/reportfunctions.R
 \name{bbDistinctCount}
 \alias{bbDistinctCount}
-\title{Performs a distinct count of Items in a vector (omits NA). Basically a wrapper for length() and unique()}
+\title{bbDistinctCount}
 \usage{
-bbDistinctCount(data)
+bbDistinctCount(x)
 }
 \arguments{
-\item{data}{a vector}
+\item{x}{a vector}
 }
 \description{
-Performs a distinct count of Items in a vector (omits NA). Basically a wrapper for length() and unique()
+Performs a distinct count of Items in a vector while omiting NAs. Basically a wrapper for dplyrs n_distinct
+}
+\details{
+bbDistinctCount
 }
 \examples{
+\dontrun{
 bbDistinctCount(c(12,15,12,17,19,22,24,23,23,66,78,65,34,NA))
+}
 
 }
 \author{

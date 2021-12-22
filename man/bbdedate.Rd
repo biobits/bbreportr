@@ -2,7 +2,7 @@
 % Please edit documentation in R/reportfunctions.R
 \name{bbdedate}
 \alias{bbdedate}
-\title{Formats a Datestring to German Date format (dd-mm-yyyy)}
+\title{bbdedate}
 \usage{
 bbdedate(x)
 }
@@ -10,10 +10,15 @@ bbdedate(x)
 \item{x}{date string}
 }
 \description{
+not done yet
+}
+\details{
 Formats a Datestring to German Date format (dd-mm-yyyy)
 }
 \examples{
+\dontrun{
 bbdedate("2016-11-05")
+}
 
 }
 \author{

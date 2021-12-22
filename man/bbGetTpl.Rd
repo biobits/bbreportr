@@ -2,18 +2,23 @@
 % Please edit documentation in R/reportfunctions.R
 \name{bbGetTpl}
 \alias{bbGetTpl}
-\title{Get the full Path for a Report Template based on the predefined Path by "bbSetTplPath"}
+\title{bbGetTpl}
 \usage{
-bbGetTpl(x)
+bbGetTpl(templatefile)
 }
 \arguments{
-\item{x}{Name of .Rmdd or .Rnw template}
+\item{templatefile}{Name of Rmd or Rnw template}
 }
 \description{
 Get the full Path for a Report Template based on the predefined Path by "bbSetTplPath"
 }
+\details{
+Gibt unter Verwendung der Globaken Variablen TplPath das Reporttemplate zurueck
+}
 \examples{
+\dontrun{
 report<-bbGetTpl("c:/temp/Test.Rmd")
+}
 
 }
 \author{

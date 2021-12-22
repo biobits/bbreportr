@@ -2,12 +2,22 @@
 % Please edit documentation in R/reportfunctions.R
 \name{bbsummarizetab}
 \alias{bbsummarizetab}
-\title{Creates a markdown Crosstable with 1 dimensions and summary of one variable (Mean,Sd,median 1,2nd quantile, Counts)}
+\title{bbsummarizetab}
 \usage{
-bbsummarizetab(data, var, group = NULL, caption = NULL, total = TRUE,
-  dec = 1, split.tables = 300, margin = 3,
-  table.continues = "Tabelle wird fortgesetzt", groupname = NULL,
-  orderby = NULL)
+bbsummarizetab(
+  data,
+  var,
+  group = NULL,
+  caption = NULL,
+  total = TRUE,
+  dec = 1,
+  split.tables = 300,
+  margin = 3,
+  table.continues = "Tabelle wird fortgesetzt",
+  groupname = NULL,
+  orderby = NULL,
+  lang = "EN"
+)
 }
 \arguments{
 \item{data}{the dataframe to use}
@@ -26,21 +36,30 @@ bbsummarizetab(data, var, group = NULL, caption = NULL, total = TRUE,
 
 \item{margin}{index number (1 for rows, etc.)}
 
+\item{table.continues}{string (default: 'Tabelle wird fortgesetzt') passed to pandoc.table to be used as caption for long (split) without a use defined caption}
+
 \item{groupname}{column header for groups}
 
 \item{orderby}{the column to order by}
 
-\item{table.continues:}{string (default: 'Tabelle wird fortgesetzt') passed to pandoc.table to be used as caption for long (split) without a use defined caption}
+\item{lang}{language setting for table headers. Could be one of the following two: 'EN' (default) and 'DE'}
 }
 \description{
+not done yet
+}
+\details{
 Creates a markdown Crosstable with 1 dimensions and summary of one variable (Mean,Sd,median 1,2nd quantile, Counts)
 }
 \examples{
+\dontrun{
 PatientWeight<-c(66.5,82.2,74.8,70.2,95.7,55.8,59.2,77.2,75.0,75.0,102.8,62.8,65.3)
-PatientClass<-c("ClassA","ClassB","ClassB","ClassC","ClassA","ClassC", "ClassA","ClassB","ClassA","ClassC","ClassA","ClassA","ClassA")
+PatientClass<-c("ClassA","ClassB","ClassB","ClassC","ClassA","ClassC", "ClassA",
+               "ClassB","ClassA","ClassC","ClassA","ClassA","ClassA")
 df<-as.data.frame(cbind(PatientWeight,PatientClass))
-tab<-bbsummarizetab(data=df,var="PatientWeight",group="PatientClass",caption="Summary of patients weight",total=T,dec=2,groupname="Classes")
+tab<-bbsummarizetab(data=df,var="PatientWeight",group="PatientClass"
+                   ,caption="Summary of patients weight",total=T,dec=2,groupname="Classes")
 tab
+}
 
 }
 \author{

@@ -1,28 +1,31 @@
 
 
-# library(pander)
-
-
 #######################################
 ## Crosstab for basic count statitics
 #######################################
 #' Creates a Crosstable with basic counts
 #'
 #'
-#'
+#' @title ctab
+#' @description not done yet
 #' @param row vector containing factors for row
 #' @param col vector containing factors for columns
 #' @param  margin index number (1 for rows, etc.)
 #' @param  dec decimal points (default =1)
+#' @param percs show percentages (default=FALSE)
 #' @param total sum of columns and rows (default= FALSE)
 #'
 #'
 #' @author Stefan Bartels, \email{email@biobits.eu}
 #'
 #' @examples
-#' PatientCohort<-c("CohortA","CohortA","CohortA","CohortB","CohortB","CohortB","CohortB","CohortB","CohortB","CohortC","CohortC","CohortC","CohortC")
-#' PatientClass<-c("ClassA","ClassB","ClassB","ClassC","ClassA","ClassC", "ClassA","ClassB","ClassA","ClassC","ClassA","ClassA","ClassA")
+#' \dontrun{
+#' PatientCohort<-c("CohortA","CohortA","CohortA","CohortB","CohortB","CohortB","CohortB",
+#'          "CohortB","CohortB","CohortC","CohortC","CohortC","CohortC")
+#' PatientClass<-c("ClassA","ClassB","ClassB","ClassC","ClassA","ClassC",
+#'          "ClassA","ClassB","ClassA","ClassC","ClassA","ClassA","ClassA")
 #' t<-ctab(row=PatientCohort,col=PatientClass,margin=1,total=T,perc=T)
+#' }
 #'
 #'@export
 ctab <- function(row, col, margin = 1, dec = 1, percs = FALSE, total = FALSE){
@@ -66,6 +69,7 @@ ctab <- function(row, col, margin = 1, dec = 1, percs = FALSE, total = FALSE){
   return(z)
 
 }
+
 #############################
 #
 # Crosstab with 2 dimensions an one variable for unique counting
@@ -74,6 +78,8 @@ ctab <- function(row, col, margin = 1, dec = 1, percs = FALSE, total = FALSE){
 #' Creates a Crosstable in Markdown format with 2 dimensions and one variable for a unique counting
 #'
 #'
+#' @title bbcounttab
+#' @description not done yet. But soon.
 #'
 #' @param row vector containing factors for row
 #' @param col vector containing factors for columns
@@ -84,22 +90,28 @@ ctab <- function(row, col, margin = 1, dec = 1, percs = FALSE, total = FALSE){
 #' @param percs if TRUE percentage of row or column are displayed (default=TRUE)
 #' @param split.tables where to split wide tables to separate tables. The default value is 300 characters
 #' @param margin index, or vector of indices to generate margin for
-#' @param table.continues: string (default: 'Tabelle wird fortgesetzt') passed to pandoc.table to be used as caption for long (split) without a use defined caption
+#' @param table.continues string (default: 'Tabelle wird fortgesetzt') passed to pandoc.table to be used as caption for long (split) without a use defined caption
 #' @param sortcounts if TRUE rows will be sorted descendent by counts
 #' @param split.cells where to split cells' text with line breaks. Default to 30, to disable set to Inf. Can be also supplied as a vector, for each cell separately (if length(split.cells) == number of columns + 1, then first value in split.cells if for row names, and others are for columns). Supports relative (percentage) parameters in combination with split.tables.
-#' @param ucol.name title of counted values default is "Patienten [n/(%)]"
+#' @param ucol.name title of counted values default is "Patienten n/(\%)"
+#' @param uniquecounts only unique counts
+#' @param caption caption of table
 #'
 #' @author Stefan Bartels, \email{email@biobits.eu}
 #'
 #' @import pander
 #'
 #' @examples
-#' PatientCohort<-c("CohortA","CohortA","CohortA","CohortB","CohortB","CohortB","CohortB","CohortB","CohortB","CohortC","CohortC","CohortC","CohortC")
-#' PatientClass<-c("ClassA","ClassB","ClassB","ClassC","ClassA","ClassC", "ClassA","ClassB","ClassA","ClassC","ClassA","ClassA","ClassA")
+#' \dontrun{
+#' PatientCohort<-c("CohortA","CohortA","CohortA","CohortB","CohortB","CohortB",
+#'     "CohortB","CohortB","CohortB","CohortC","CohortC","CohortC","CohortC")
+#' PatientClass<-c("ClassA","ClassB","ClassB","ClassC","ClassA","ClassC",
+#'     "ClassA","ClassB","ClassA","ClassC","ClassA","ClassA","ClassA")
 #' df<-as.data.frame(cbind(PatientCohort,PatientClass))
-#' tab<-bbcounttab(row="PatientCohort",col="PatientClass",data=df,total=T,perc=T,dec=2,ucol.name="Classes")
+#' tab<-bbcounttab(row="PatientCohort",col="PatientClass",data=df,total=T,perc=T
+#'                  ,dec=2,ucol.name="Classes")
 #' tab
-#'
+#' }
 #'@export
 bbcounttab<-function(row=NULL,col=NULL,data,uniquecounts=NULL,caption=NULL,percs=TRUE,total=TRUE,dec=1,split.tables=300,margin=3,
                      table.continues="Tabelle wird fortgesetzt" ,sortcounts=TRUE,split.cells=30,ucol.name="Patienten [n/(%)]"){
@@ -146,6 +158,7 @@ bbcounttab<-function(row=NULL,col=NULL,data,uniquecounts=NULL,caption=NULL,percs
   pander::pandoc.table(tab,split.tables=split.tables,split.cells=split.cells,style="multiline",caption=caption)
 }
 
+
 #############################
 #
 # Crosstab with 1 dimensions and summary of one variable (Mean,Sd,median 1,2nd quantile, Counts)
@@ -154,6 +167,8 @@ bbcounttab<-function(row=NULL,col=NULL,data,uniquecounts=NULL,caption=NULL,percs
 
 #' Creates a markdown Crosstable with 1 dimensions and summary of one variable (Mean,Sd,median 1,2nd quantile, Counts)
 #'
+#' @title  bbsummarizetab
+#' @description not done yet
 #' @import dplyr
 #'
 #' @param data the dataframe to use
@@ -164,37 +179,50 @@ bbcounttab<-function(row=NULL,col=NULL,data,uniquecounts=NULL,caption=NULL,percs
 #' @param dec decimal points (default =1)
 #' @param split.tables where to split wide tables to separate tables. The default value is 300 characters
 #' @param margin index number (1 for rows, etc.)
-#' @param table.continues: string (default: 'Tabelle wird fortgesetzt') passed to pandoc.table to be used as caption for long (split) without a use defined caption
+#' @param table.continues string (default: 'Tabelle wird fortgesetzt') passed to pandoc.table to be used as caption for long (split) without a use defined caption
 #' @param groupname column header for groups
 #' @param orderby the column to order by
-
+#' @param lang language setting for table headers. Could be one of the following two: 'EN' (default) and 'DE'
 #'
 #' @author Stefan Bartels, \email{email@biobits.eu}
 #'
 #' @examples
+#' \dontrun{
 #' PatientWeight<-c(66.5,82.2,74.8,70.2,95.7,55.8,59.2,77.2,75.0,75.0,102.8,62.8,65.3)
-#' PatientClass<-c("ClassA","ClassB","ClassB","ClassC","ClassA","ClassC", "ClassA","ClassB","ClassA","ClassC","ClassA","ClassA","ClassA")
+#' PatientClass<-c("ClassA","ClassB","ClassB","ClassC","ClassA","ClassC", "ClassA",
+#'                "ClassB","ClassA","ClassC","ClassA","ClassA","ClassA")
 #' df<-as.data.frame(cbind(PatientWeight,PatientClass))
-#' tab<-bbsummarizetab(data=df,var="PatientWeight",group="PatientClass",caption="Summary of patients weight",total=T,dec=2,groupname="Classes")
+#' tab<-bbsummarizetab(data=df,var="PatientWeight",group="PatientClass"
+#'                    ,caption="Summary of patients weight",total=T,dec=2,groupname="Classes")
 #' tab
+#' }
 #'
 #'@export
 bbsummarizetab<-function(data,var,group=NULL,caption=NULL,total=TRUE,dec=1,split.tables=300,margin=3,
-                         table.continues="Tabelle wird fortgesetzt",groupname=NULL,orderby=NULL ){
+                         table.continues="Tabelle wird fortgesetzt",groupname=NULL,orderby=NULL,lang="EN" ){
  # require(dplyr)# hier mus as.numerich verwenbdet werden wg bug: https://github.com/hadley/dplyr/issues/893
 
-  data<-subset(data,is.na(data[,var])==FALSE)
+  #data<-subset(data,is.na(data[,var])==FALSE) <- am 20.04.2020 durch dplyr version ersetzt
+  DE_List<-c("Min","Q25","Mittel","SD","Median","Q75","Max","Anzahl\nWerte")
+  EN_List<-c("min","q25","mean","sd","median","q75","max","N")
+  ifelse(lang=="DE",HL<-DE_List,HL<-EN_List)
+  FUN_list<-list(min = ~round(min(.x),dec)
+                 ,quantile25= ~round(quantile(.x,probs=0.25),dec)
+                 ,mean= ~round(mean(.x),dec)
+                 ,sd = ~round(sd(.x),dec)
+                 ,median = ~round(median(.x),dec)
+                 ,quantile75 = ~round(quantile(.x,probs=0.75),dec)
+                 ,max = ~round(max(.x),dec)
+                 ,N = ~length(.x))
+  data<-data%>%filter(!is.na(!!rlang::sym(var)))
 
   colnames(data)[colnames(data)==var]<-"uvar"
   data$uvar<-as.numeric(data$uvar)
-  tab0<-data%>%summarise( Min=min(uvar)
-                          ,Q25= quantile(uvar,probs=0.25)
-                          ,Mittel = mean(uvar)
-                          ,SD = sd(uvar)
-                          ,Median = median(uvar)
-                          ,Q75 = quantile(uvar,probs=0.75)
-                          ,Max=max(uvar)
-                          ,"Anzahl\nWerte"=length(uvar))
+  tab0<-data%>%summarise(across("uvar",FUN_list))
+  names(tab0)<-HL
+
+
+
 
 
   if (is.null(group)==FALSE){
@@ -204,39 +232,27 @@ bbsummarizetab<-function(data,var,group=NULL,caption=NULL,total=TRUE,dec=1,split
     if(!is.null(orderby)){
       colnames(data)[colnames(data)==orderby]<-"ordervar"
       data<-data%>%arrange(ordervar)
-      tab<- data%>%group_by("group"=ugroup,ordervar)%>%summarise( Min=min(uvar)
-                                                                  ,Q25= quantile(uvar,probs=0.25)
-                                                                  ,Mittel = mean(uvar)
-                                                                  ,SD = sd(uvar)
-                                                                  ,Median = median(uvar)
-                                                                  ,Q75 = quantile(uvar,probs=0.75)
-                                                                  ,Max=max(uvar)
-                                                                  ,Anz=length(uvar))%>%ungroup()%>%arrange(ordervar)
-      tab<-tab%>%select(group,Min,Q25,Mittel,SD,Median,Q75,Max,"Anzahl\nWerte"=Anz)
+      tab<- data%>%group_by("group"=ugroup,ordervar)%>%summarise(across("uvar",FUN_list))%>%ungroup()%>%arrange(ordervar)
+      tab<-tab%>%select(group,vars(HL))
       #dataorder<-tab%>%select(group)%>%distinct()
       #levels(tab$group)<-dataorder[,1]
     }else{
+      tab<-data%>%group_by("group"=ugroup)%>%summarise(across("uvar",FUN_list))
+      names(tab)[2:9]<-HL
 
-      tab<- data%>%group_by("group"=ugroup)%>%summarise( Min=min(uvar)
-                                                         ,Q25= quantile(uvar,probs=0.25)
-                                                         ,Mittel = mean(uvar)
-                                                         ,SD = sd(uvar)
-                                                         ,Median = median(uvar)
-                                                         ,Q75 = quantile(uvar,probs=0.75)
-                                                         ,Max=max(uvar)
-                                                         ,"Anzahl\nWerte"=length(uvar))
     }
 
 
-
+    tot<-ifelse(lang=="DE","Gesamt","total")
     if (total==TRUE){
       #names(tab0)<-names(tab)
+
       tab0<-cbind(group,tab0)
-      levels(tab0$group)<-c(levels(tab0$group),"Gesamt")
-      tab0[1,1]<-"Gesamt"
+      levels(tab0$group)<-c(levels(tab0$group),tot)
+      tab0[1,1]<-tot
       tab<-rbind(tab,tab0)
     }
-    if(is.null(groupname)==FALSE){colnames(tab)[1]<-groupname }else{colnames(tab)[1]<-"Gruppe"}
+    if(is.null(groupname)==FALSE){colnames(tab)[1]<-groupname }else{colnames(tab)[1]<-tot}
   }
   else {tab<-tab0[,1:length(tab0)]}
   pander::panderOptions('table.continues',table.continues)
@@ -246,11 +262,15 @@ bbsummarizetab<-function(data,var,group=NULL,caption=NULL,total=TRUE,dec=1,split
   pander::pandoc.table(tab,split.tables=split.tables,style="multiline",caption=caption)
 
 }
+
+
 #########################################################
 # BArplot with ggplot
 #########################################################
 #' Streamlines the creation of a barplot for primitive counting  using ggplot2
 #'
+#' @title bbbarplot
+#' @description not done yet
 #' @import ggplot2
 #'
 #' @param data the dataframe to use
@@ -258,28 +278,36 @@ bbsummarizetab<-function(data,var,group=NULL,caption=NULL,total=TRUE,dec=1,split
 #' @param uniquecounts the variable to count
 #' @param countslab lable of the y-axis
 #' @param xlab label of x-axis
-#' @param xrotate if true labels of x-axis are rotation by 90°
+#' @param xrotate if true labels of x-axis are rotation by 90 degree
 #' @param facet the factor to facet the plot by
 #' @param prop if true the proportions will be ploted
 #' @param xaxisorder vector of values to sort the values of "factor"
 #' @param horizontal if ture a horizontal barplot is ploted
 #' @param stackpar if the name of a variable is given a stacked barplot will be generated
+#' @param stackreverse reverse order of stacks
+#' @param palette color palette to use
+#' @param palettereverse flips the order of colors in palette
 #' @param facetncol the amount of column the facet plot is generated to
 #' @param stacktitle the title of the stacked variable default="Gruppe"
 #' @param facetscales the scale = "free"
 #' @param cex.datalabel fontsize of datalabels default=2,
 #' @param datalabel if true the data will be labeld default=TRUE
-
 #'
 #' @author Stefan Bartels, \email{email@biobits.eu}
 #'
 #' @examples
+#' \dontrun{
 #' PatID<-seq(1,13)
-#' PatientWeightClass<-c("61-70","41-50","61-70","41-50","61-70","71-80","81-90","81-90","71-80","81-90","81-90","91-100","61-70")
-#' PatientClass<-c("ClassA","ClassB","ClassB","ClassC","ClassA","ClassC", "ClassA","ClassB","ClassA","ClassC","ClassA","ClassA","ClassA")
+#' PatientWeightClass<-c("61-70","41-50","61-70","41-50","61-70","71-80"
+#'            ,"81-90","81-90","71-80","81-90","81-90","91-100","61-70")
+#' PatientClass<-c("ClassA","ClassB","ClassB","ClassC","ClassA","ClassC",
+#'                 "ClassA","ClassB","ClassA","ClassC","ClassA","ClassA","ClassA")
 #' df<-as.data.frame(cbind(PatID,PatientWeightClass,PatientClass))
-#' p1<-bbbarplot(data=df,"PatientWeightClass","PatID",countslab="Anzahl", xlab=NULL,xrotate=FALSE,stackpar="PatientClass",stacktitle="PatientClass",datalabel=TRUE)
+#' p1<-bbbarplot(data=df,"PatientWeightClass","PatID",countslab="Anzahl",
+#'              xlab=NULL,xrotate=FALSE,stackpar="PatientClass"
+#'              ,stacktitle="PatientClass",datalabel=TRUE)
 #' p1
+#' }
 #'
 #'@export
 bbbarplot<-function(data, factor,uniquecounts,countslab="Anzahl", xlab=NULL,xrotate=FALSE,facet=NULL,prop=FALSE,xaxisorder=NULL,
@@ -322,9 +350,8 @@ bbbarplot<-function(data, factor,uniquecounts,countslab="Anzahl", xlab=NULL,xrot
         imgdat<-data%>%group_by_(xfac=factor,stack=stackpar)%>%summarise(Anzahl=n_distinct(ucountdat))%>%mutate(ycount=round(100/sum(Anzahl)*Anzahl,2))
 
       }
-    }else{
-      # Das ist noch nicht gelöst
     }
+
   }
 
 
@@ -369,62 +396,23 @@ bbbarplot<-function(data, factor,uniquecounts,countslab="Anzahl", xlab=NULL,xrot
   }
   return (bp)
 }
-##################################################################
-# Legt den Pfad zu den Reporttemplates als Globale Variable an
-##################################################################
-#' Set the Path to Report Template Folder as global variable
-#'
-#'
-#'
-#' @param x path path to folder
-
-#' @author Stefan Bartels, \email{email@biobits.eu}
-#'
-#' @examples
-#' bbSetTplPath("c:/temp/Test")
-#'
-#'@export
-bbSetTplPath<-function(x){
-
-  TplPath<<-x
-  return(TplPath)
-
-}
-##################################################################
-# Gibt unter Verwendung der Globaken Variablen TplPath das Reporttemplate zurück
-##################################################################
-#' Get the full Path for a Report Template based on the predefined Path by "bbSetTplPath"
-#'
-#'
-#'
-#' @param x Name of .Rmdd or .Rnw template
-
-#' @author Stefan Bartels, \email{email@biobits.eu}
-#'
-#' @examples
-#' report<-bbGetTpl("c:/temp/Test.Rmd")
-#'
-#'@export
-bbGetTpl<-function(x){
-
-
-  return(paste(TplPath,"/",x,sep=""))
-
-}
 
 ##################################################################
 # Wrapperfuncction for knit_expand
 ##################################################################
 #' Wrapper for knit_expand
 #'
-#'
-#'
+#' @title bbreport
+#' @description not done yet
 #' @param file pthe path to file
-
+#' @param ... other args
+#' @import knitr
 #' @author Stefan Bartels, \email{email@biobits.eu}
 #'
 #' @examples
+#' \dontrun{
 #' bbreport("c:/temp/Test.Rmd")
+#' }
 #'
 #'@export
 bbreport<-function(file,...){
@@ -434,36 +422,41 @@ bbreport<-function(file,...){
 
 }
 
-
 ##################################################################
 # Wrapperfuncction for german dates
 ##################################################################
 #' Formats a Datestring to German Date format (dd-mm-yyyy)
 #'
-#'
-#'
+#' @title bbdedate
+#' @description not done yet
 #' @param x date string
 
 #' @author Stefan Bartels, \email{email@biobits.eu}
 #'
 #' @examples
+#' \dontrun{
 #' bbdedate("2016-11-05")
+#' }
 #'
 #'@export
 bbdedate<-function(x){
 
   return(strftime(x,"%d.%m.%Y"))
 }
+
+
 ##################################################################
 # Wrapperfuncction for latex '\\cleardoublepage' tag withhin markdown to control pagination in pdf output
 ##################################################################
 #' Wrapperfuncction for latex '\\cleardoublepage' tag withhin markdown to control pagination in pdf output
-#'
-#'
+#' @title bbclearpage
+#' @description not done yet
 #' @author Stefan Bartels, \email{email@biobits.eu}
 #'
 #' @examples
+#' \dontrun{
 #' bbclearpage()
+#' }
 #'
 #'@export
 bbclearpage<-function(){
@@ -475,11 +468,12 @@ bbclearpage<-function(){
 #########################################################
 # histogram with ggplot
 #########################################################
-#' Streamlines plotting of a histogramm using ggplot2
 #'
 #' @import ggplot2
 #' @import dplyr
 #'
+#' @title bbgghistplot
+#' @description Streamlines plotting of a histogramm using ggplot2
 #' @param data dataframe
 #' @param factor the column to count
 #' @param uniquecounts the column that determines the unique id
@@ -492,15 +486,19 @@ bbclearpage<-function(){
 #' @author Stefan Bartels, \email{email@biobits.eu}
 #'
 #' @examples
+#' \dontrun{
 #' PatID<-seq(1,50)
 #' PatientWeight<-runif(50, min=40, max=100)
-#' PatientWeightClass<-c("61-70","41-50","61-70","41-50","61-70","71-80","81-90","81-90","71-80","81-90","81-90","91-100","61-70")
-#' PatientClass<-c("ClassA","ClassB","ClassB","ClassC","ClassA","ClassC", "ClassA","ClassB","ClassA","ClassC","ClassA","ClassA","ClassA")
+#' PatientWeightClass<-c("61-70","41-50","61-70","41-50","61-70","71-80",
+#'                            "81-90","81-90","71-80","81-90","81-90","91-100","61-70")
+#' PatientClass<-c("ClassA","ClassB","ClassB","ClassC","ClassA","ClassC",
+#'                           "ClassA","ClassB","ClassA","ClassC","ClassA","ClassA","ClassA")
 #' PatientClass2<-seq(1,50,50)
 
 #' df<-as.data.frame(cbind(PatID,PatientWeight,PatientClass))
 #' p1<-bbgghistplot(data=df,"PatientWeight","PatID",countslab="Anzahl",bin=10)
 #' p1
+#' }
 #'
 #'@export
 bbgghistplot<-function(data, factor,uniquecounts,countslab="Anzahl", xlabel=NULL,bin=1,facet=NULL,dens=FALSE){
@@ -540,11 +538,13 @@ bbgghistplot<-function(data, factor,uniquecounts,countslab="Anzahl", xlabel=NULL
 #########################################################
 # boxplot with ggplot
 #########################################################
-#' boxplot with ggplot
+#'
 #'
 #' @import ggplot2
 #' @import dplyr
 #'
+#' @title bbggboxplot
+#' @description boxplot with ggplot
 #' @param data dataframe
 #' @param factor the factor to count
 #' @param group the group
@@ -557,13 +557,16 @@ bbgghistplot<-function(data, factor,uniquecounts,countslab="Anzahl", xlabel=NULL
 #' @author Stefan Bartels, \email{email@biobits.eu}
 #'
 #' @examples
+#' \dontrun{
 #' PatID<-seq(1,50)
 #' PatientWeight<-runif(50, min=40, max=100)
 #' PatientClass<-rep(c("ClassA","ClassB","ClassC","ClassB","ClassC"),10)
 #' df<-as.data.frame(cbind(PatID,PatientWeight,PatientClass))
 #' df$PatientWeight<-as.double(df$PatientWeight)
-#' p1<-bbggboxplot(data=df,factor="PatientWeight",group="PatientClass",uniquecounts="PatID",ylabel="Anzahl",bin=1)
+#' p1<-bbggboxplot(data=df,factor="PatientWeight",group="PatientClass",
+#'                    uniquecounts="PatID",ylabel="Anzahl",bin=1)
 #' p1
+#' }
 #'
 #'@export
 bbggboxplot<-function(data, factor,group ,uniquecounts,ylabel="Anzahl", xlabel=NULL,xrotate=FALSE,
@@ -586,49 +589,6 @@ bbggboxplot<-function(data, factor,group ,uniquecounts,ylabel="Anzahl", xlabel=N
   return(g)
 }
 
-#########################################################
-#Gibt einen "Count Distinct" für die Spalte eines Dataframes zurück Achtung: NA wird ausgeschlossen
-#########################################################
-#' Performs a distinct count of Items in a vector (omits NA). Basically a wrapper for length() and unique()
-#'
-#' @param data a vector
-#'
-#' @author Stefan Bartels, \email{email@biobits.eu}
-#'
-#' @examples
-#' bbDistinctCount(c(12,15,12,17,19,22,24,23,23,66,78,65,34,NA))
-#'
-#'@export
-bbDistinctCount<-function(data){
-
-  return(length(na.omit(unique(data))))
-
-}
-
-#########################################################
-# Prüft, ob ein Dataframe Daten hat
-# Return: bool
-#########################################################
-#' Checks if a Dataframe is empty or not. If TRUE
-#'
-#' @param data a dataframe
-#'
-#' @author Stefan Bartels, \email{email@biobits.eu}
-#'
-#' @examples
-#' df<-as.data.frame(c("a","b","c"))
-#' bbChkDataFrame(df)
-#'
-#'@export
-bbChkDataFrame<-function(data){
-  retval<-FALSE
-  if(length(unique(data[,1]))>0){
-    retval<-TRUE
-  }
-  return(retval)
-
-}
-
 #######################################################################################################
 #######################################################################################################
 #' Multiple plot function
@@ -638,9 +598,13 @@ bbChkDataFrame<-function(data){
 #' then plot 1 will go in the upper left, 2 will go in the upper right, and
 #' 3 will go all the way across the bottom.
 #'
-#' @param cols:   Number of columns in layout
-#' @param layout: A matrix specifying the layout. If present, 'cols' is ignored.
-#' @param plotlist: vector of plots
+#' @title multiplot
+#' @description not done yet
+#' @import grid
+#' @param cols   Number of columns in layout
+#' @param layout A matrix specifying the layout. If present, 'cols' is ignored.
+#' @param plotlist vector of plots
+#' @param ... other args
 #'
 #' @author Stefan Bartels, \email{email@biobits.eu}
 #'
@@ -682,18 +646,121 @@ multiplot <- function(..., plotlist=NULL, cols=1, layout=NULL) {
   }
 }
 
-# Knitr Hook function für den Abbildunsnamen
-#
-# ggp
-# knit_hooks$set(abbLab = function(before, options, envir) {
-#   if (before){
-#     if (exists("AbbildungsCounter")==FALSE){AbbildungsCounter<<-1}
-#
-#     AbbLab<<-paste("Abbildung_",AbbildungsCounter,sep="")
-#     options$label<-AbbLab
-#     AbbildungsCounter<<-AbbildungsCounter+1
-#   }
-# })
+##################################################################
+# Legt den Pfad zu den Reporttemplates als Globale Variable an
+##################################################################
+#' Set the Path to Report Template Folder as global variable
+#'
+#' @title bbSetTplPath
+#' @description not done yet
+#' @param x path path to folder
+#' @author Stefan Bartels, \email{email@biobits.eu}
+#'
+#' @examples
+#' \dontrun{
+#' bbSetTplPath("c:/temp/Test")
+#' }
+#'
+#'@export
+bbSetTplPath<-function(x){
+
+  TplPath<<-x
+  return(TplPath)
+
+}
+
+
+##################################################################
+# Gibt unter Verwendung der Globaken Variablen TplPath das Reporttemplate zurueck
+##################################################################
+#' Gibt unter Verwendung der Globaken Variablen TplPath das Reporttemplate zurueck
+#'
+#' @title bbGetTpl
+#' @description Get the full Path for a Report Template based on the predefined Path by "bbSetTplPath"
+#' @param templatefile Name of Rmd or Rnw template
+#' @author Stefan Bartels, \email{email@biobits.eu}
+#'
+#' @examples
+#' \dontrun{
+#' report<-bbGetTpl("c:/temp/Test.Rmd")
+#' }
+#'
+#'@export
+bbGetTpl<-function(templatefile){
+
+  return(paste(TplPath,"/",templatefile,sep=""))
+
+}
+
+
+#########################################################
+# bbDistinctCount
+#########################################################
+#' bbDistinctCount
+#' @title bbDistinctCount
+#' @description Performs a distinct count of Items in a vector while omiting NAs. Basically a wrapper for dplyrs n_distinct
+#'
+#' @param x a vector
+#'
+#' @author Stefan Bartels, \email{email@biobits.eu}
+#' @import dplyr
+#'
+#' @examples
+#' \dontrun{
+#' bbDistinctCount(c(12,15,12,17,19,22,24,23,23,66,78,65,34,NA))
+#' }
+#'
+#'@export
+bbDistinctCount<-function(x){
+  require(dplyr)
+  return(dplyr::n_distinct(x, na.rm = TRUE))
+}
+
+
+
+
+
+#########################################################
+# Prueft, ob ein Dataframe Daten hat
+# Returns bool
+#########################################################
+#' @title bbChkDataFrame
+#' @description Checks weather a Dataframe is empty or not
+#' @param data a dataframe
+#'
+#' @author Stefan Bartels, \email{email@biobits.eu}
+#'
+#' @examples
+#' \dontrun{
+#' df<-as.data.frame(c("a","b","c"))
+#' bbChkDataFrame(df)
+#' }
+#'
+#'@export
+bbChkDataFrame<-function(data){
+  retval<-FALSE
+  if(length(unique(data[,1]))>0){
+    retval<-TRUE
+  }
+  return(retval)
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

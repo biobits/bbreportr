@@ -2,10 +2,18 @@
 % Please edit documentation in R/reportfunctions.R
 \name{bbgghistplot}
 \alias{bbgghistplot}
-\title{Streamlines plotting of a histogramm using ggplot2}
+\title{bbgghistplot}
 \usage{
-bbgghistplot(data, factor, uniquecounts, countslab = "Anzahl",
-  xlabel = NULL, bin = 1, facet = NULL, dens = FALSE)
+bbgghistplot(
+  data,
+  factor,
+  uniquecounts,
+  countslab = "Anzahl",
+  xlabel = NULL,
+  bin = 1,
+  facet = NULL,
+  dens = FALSE
+)
 }
 \arguments{
 \item{data}{dataframe}
@@ -28,14 +36,18 @@ bbgghistplot(data, factor, uniquecounts, countslab = "Anzahl",
 Streamlines plotting of a histogramm using ggplot2
 }
 \examples{
+\dontrun{
 PatID<-seq(1,50)
 PatientWeight<-runif(50, min=40, max=100)
-PatientWeightClass<-c("61-70","41-50","61-70","41-50","61-70","71-80","81-90","81-90","71-80","81-90","81-90","91-100","61-70")
-PatientClass<-c("ClassA","ClassB","ClassB","ClassC","ClassA","ClassC", "ClassA","ClassB","ClassA","ClassC","ClassA","ClassA","ClassA")
+PatientWeightClass<-c("61-70","41-50","61-70","41-50","61-70","71-80",
+                           "81-90","81-90","71-80","81-90","81-90","91-100","61-70")
+PatientClass<-c("ClassA","ClassB","ClassB","ClassC","ClassA","ClassC",
+                          "ClassA","ClassB","ClassA","ClassC","ClassA","ClassA","ClassA")
 PatientClass2<-seq(1,50,50)
 df<-as.data.frame(cbind(PatID,PatientWeight,PatientClass))
 p1<-bbgghistplot(data=df,"PatientWeight","PatID",countslab="Anzahl",bin=10)
 p1
+}
 
 }
 \author{

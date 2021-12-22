@@ -2,7 +2,7 @@
 % Please edit documentation in R/reportfunctions.R
 \name{ctab}
 \alias{ctab}
-\title{Creates a Crosstable with basic counts}
+\title{ctab}
 \usage{
 ctab(row, col, margin = 1, dec = 1, percs = FALSE, total = FALSE)
 }
@@ -15,15 +15,24 @@ ctab(row, col, margin = 1, dec = 1, percs = FALSE, total = FALSE)
 
 \item{dec}{decimal points (default =1)}
 
+\item{percs}{show percentages (default=FALSE)}
+
 \item{total}{sum of columns and rows (default= FALSE)}
 }
 \description{
+not done yet
+}
+\details{
 Creates a Crosstable with basic counts
 }
 \examples{
-PatientCohort<-c("CohortA","CohortA","CohortA","CohortB","CohortB","CohortB","CohortB","CohortB","CohortB","CohortC","CohortC","CohortC","CohortC")
-PatientClass<-c("ClassA","ClassB","ClassB","ClassC","ClassA","ClassC", "ClassA","ClassB","ClassA","ClassC","ClassA","ClassA","ClassA")
+\dontrun{
+PatientCohort<-c("CohortA","CohortA","CohortA","CohortB","CohortB","CohortB","CohortB",
+         "CohortB","CohortB","CohortC","CohortC","CohortC","CohortC")
+PatientClass<-c("ClassA","ClassB","ClassB","ClassC","ClassA","ClassC",
+         "ClassA","ClassB","ClassA","ClassC","ClassA","ClassA","ClassA")
 t<-ctab(row=PatientCohort,col=PatientClass,margin=1,total=T,perc=T)
+}
 
 }
 \author{

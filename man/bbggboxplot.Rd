@@ -2,10 +2,18 @@
 % Please edit documentation in R/reportfunctions.R
 \name{bbggboxplot}
 \alias{bbggboxplot}
-\title{boxplot with ggplot}
+\title{bbggboxplot}
 \usage{
-bbggboxplot(data, factor, group, uniquecounts, ylabel = "Anzahl",
-  xlabel = NULL, xrotate = FALSE, facet = NULL)
+bbggboxplot(
+  data,
+  factor,
+  group,
+  uniquecounts,
+  ylabel = "Anzahl",
+  xlabel = NULL,
+  xrotate = FALSE,
+  facet = NULL
+)
 }
 \arguments{
 \item{data}{dataframe}
@@ -28,13 +36,16 @@ bbggboxplot(data, factor, group, uniquecounts, ylabel = "Anzahl",
 boxplot with ggplot
 }
 \examples{
+\dontrun{
 PatID<-seq(1,50)
 PatientWeight<-runif(50, min=40, max=100)
 PatientClass<-rep(c("ClassA","ClassB","ClassC","ClassB","ClassC"),10)
 df<-as.data.frame(cbind(PatID,PatientWeight,PatientClass))
 df$PatientWeight<-as.double(df$PatientWeight)
-p1<-bbggboxplot(data=df,factor="PatientWeight",group="PatientClass",uniquecounts="PatID",ylabel="Anzahl",bin=1)
+p1<-bbggboxplot(data=df,factor="PatientWeight",group="PatientClass",
+                   uniquecounts="PatID",ylabel="Anzahl",bin=1)
 p1
+}
 
 }
 \author{

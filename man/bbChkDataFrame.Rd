@@ -2,7 +2,7 @@
 % Please edit documentation in R/reportfunctions.R
 \name{bbChkDataFrame}
 \alias{bbChkDataFrame}
-\title{Checks if a Dataframe is empty or not. If TRUE}
+\title{bbChkDataFrame}
 \usage{
 bbChkDataFrame(data)
 }
@@ -10,11 +10,13 @@ bbChkDataFrame(data)
 \item{data}{a dataframe}
 }
 \description{
-Checks if a Dataframe is empty or not. If TRUE
+Checks weather a Dataframe is empty or not
 }
 \examples{
+\dontrun{
 df<-as.data.frame(c("a","b","c"))
 bbChkDataFrame(df)
+}
 
 }
 \author{

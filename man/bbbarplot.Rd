@@ -2,14 +2,29 @@
 % Please edit documentation in R/reportfunctions.R
 \name{bbbarplot}
 \alias{bbbarplot}
-\title{Streamlines the creation of a barplot for primitive counting  using ggplot2}
+\title{bbbarplot}
 \usage{
-bbbarplot(data, factor, uniquecounts, countslab = "Anzahl",
-  xlab = NULL, xrotate = FALSE, facet = NULL, prop = FALSE,
-  xaxisorder = NULL, horizontal = FALSE, stackpar = NULL,
-  stackreverse = FALSE, facetncol = 2, stacktitle = "Gruppe",
-  facetscales = "free", cex.datalabel = 2, datalabel = TRUE,
-  palette = "main", palettereverse = FALSE)
+bbbarplot(
+  data,
+  factor,
+  uniquecounts,
+  countslab = "Anzahl",
+  xlab = NULL,
+  xrotate = FALSE,
+  facet = NULL,
+  prop = FALSE,
+  xaxisorder = NULL,
+  horizontal = FALSE,
+  stackpar = NULL,
+  stackreverse = FALSE,
+  facetncol = 2,
+  stacktitle = "Gruppe",
+  facetscales = "free",
+  cex.datalabel = 2,
+  datalabel = TRUE,
+  palette = "main",
+  palettereverse = FALSE
+)
 }
 \arguments{
 \item{data}{the dataframe to use}
@@ -22,7 +37,7 @@ bbbarplot(data, factor, uniquecounts, countslab = "Anzahl",
 
 \item{xlab}{label of x-axis}
 
-\item{xrotate}{if true labels of x-axis are rotation by 90°}
+\item{xrotate}{if true labels of x-axis are rotation by 90 degree}
 
 \item{facet}{the factor to facet the plot by}
 
@@ -34,6 +49,8 @@ bbbarplot(data, factor, uniquecounts, countslab = "Anzahl",
 
 \item{stackpar}{if the name of a variable is given a stacked barplot will be generated}
 
+\item{stackreverse}{reverse order of stacks}
+
 \item{facetncol}{the amount of column the facet plot is generated to}
 
 \item{stacktitle}{the title of the stacked variable default="Gruppe"}
@@ -43,17 +60,30 @@ bbbarplot(data, factor, uniquecounts, countslab = "Anzahl",
 \item{cex.datalabel}{fontsize of datalabels default=2,}
 
 \item{datalabel}{if true the data will be labeld default=TRUE}
+
+\item{palette}{color palette to use}
+
+\item{palettereverse}{flips the order of colors in palette}
 }
 \description{
+not done yet
+}
+\details{
 Streamlines the creation of a barplot for primitive counting  using ggplot2
 }
 \examples{
+\dontrun{
 PatID<-seq(1,13)
-PatientWeightClass<-c("61-70","41-50","61-70","41-50","61-70","71-80","81-90","81-90","71-80","81-90","81-90","91-100","61-70")
-PatientClass<-c("ClassA","ClassB","ClassB","ClassC","ClassA","ClassC", "ClassA","ClassB","ClassA","ClassC","ClassA","ClassA","ClassA")
+PatientWeightClass<-c("61-70","41-50","61-70","41-50","61-70","71-80"
+           ,"81-90","81-90","71-80","81-90","81-90","91-100","61-70")
+PatientClass<-c("ClassA","ClassB","ClassB","ClassC","ClassA","ClassC",
+                "ClassA","ClassB","ClassA","ClassC","ClassA","ClassA","ClassA")
 df<-as.data.frame(cbind(PatID,PatientWeightClass,PatientClass))
-p1<-bbbarplot(data=df,"PatientWeightClass","PatID",countslab="Anzahl", xlab=NULL,xrotate=FALSE,stackpar="PatientClass",stacktitle="PatientClass",datalabel=TRUE)
+p1<-bbbarplot(data=df,"PatientWeightClass","PatID",countslab="Anzahl",
+             xlab=NULL,xrotate=FALSE,stackpar="PatientClass"
+             ,stacktitle="PatientClass",datalabel=TRUE)
 p1
+}
 
 }
 \author{
